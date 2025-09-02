@@ -1,50 +1,23 @@
 import userModel from '../models/userModel.js'
 
 class UserRepository {
-    async createUser(name, email, password) {
-        try {
-            const newUser = await User.create({ name, email, password });
-            return newUser;
-        } catch (error) {
-            throw new Error('Erro ao criar usuario: ' + error.message);
-        }
+    async createUser(data) {
+        return await userModel.create(data);
     }
     async findUserByEmail(email) {
-        try {
-            const user = await User.findOne({ where: { email } });
-            return user;
-        }
-        catch (error) {
-            throw new Error('Erro ao buscar usuario por email: ' + error.message);
-        }
+        return await userModel.findOne({ where: { email } });
+    }
+    async gewtUserByemailWithPassword(email){
+        return await userModel.findOne({where: {email}, attributes: {include: ['password']}});
     }
     async findUserById(id) {
-        try {
-            const user = await User.findByPk(id);
-            return user;
-        } catch (error) {
-            throw new Error('Erro ao buscar usuario por ID: ' + error.message);
-        }
+        return await userModel.findByPk(id);
     }
     async updateUser(id, updates) {
-        try {
-            const user = await this.findUserById(id);
-            if (!user) throw new Error('Usuario nao encontrado')
-            await user.update(updates);
-            return user;
-        } catch (error) {
-            throw new Error('Erro ao atualizar usuario: ' + error.message);
-        }
+        return await userModel.update(updates, {where: { id } });
     }
     async deleteUser(id) {
-        try {
-            const user = await this.findUserById(id);
-            if (!user) throw new Error('Usuario nao encontrado')
-            await user.destroy();
-            return true;
-        } catch (error) {
-            throw new Error('Erro ao deletar usuario: ' + error.message);
-        }
+        return await userModel.destroy({where: { id } });
     }
     getAllUsers() {
         return userModel.findAll({attributs: {exclude: ['password']}});
