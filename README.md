@@ -49,7 +49,7 @@ Backend (Amigo/nakabavictor)
 [ ] Pesquisa dinâmica enquanto digita.
 
 ## Tecnologias Usadas
-Backend: Node.js, Express, e um banco de dados (SQLite, MongoDB ou JSON).
+Backend: Node.js, Express, e um banco de dados (SQLite).
 
 Frontend: React, HTML, CSS.
 
