@@ -1,9 +1,8 @@
 import userRepository from '../repositories/userRepository.js';
 import { generateToken } from '../utils/jwtHelper.js';
 
-
 class UserService{
-    condstructor(UserRepository){
+    constructor(UserRepository){
         this.userRepository = UserRepository;
     }
     async registerUser(user){
@@ -11,11 +10,10 @@ class UserService{
         if(existingUser){
             throw new Error('Usuario ja existe com esse email');
         }
-        const newUser = await this.userRepository.createUser(user);
-        return newUser;
+        return await this.userRepository.createUser(user);
     }
     async loginUser(email, password){
-        const user = await this.userRepository.gewtUserByemailWithPassword(email);
+        const user = await this.userRepository.getUserByemailWithPassword(email);
         if(!user || !user.isValidPassword(password)){
             throw new Error('Email ou senha invalidos')
         }
@@ -27,11 +25,31 @@ class UserService{
             token: token,
         };
     }
-    async getUserById(id){
-        const user = await this.userRepository.findUserById(id);
-        if(!user){
-            throw new Error('Usuario nao encontrado');
-        }
+    async getUserByEmail(email){
+        const user = await this.userRepository.findUserByEmail(email);
+        if(!user) throw new Error('Usuario nao encontrado');
         return user;
     }
+    async getUserById(id){
+        const user = await this.userRepository.findUserById(id);
+        if(!user) throw new Error('Usuario nao encontrado');
+        return user;
+    }
+    async updateUser(id, userData){
+        const user = await this.userRepository.findUserById(id);
+        if(!user)throw new Error('Usuario nao encontrado');
+        return await this.userRepository.updateUser(id, userData);
+    }
+    async deleteUser(id){
+        const user = await this.userRepository.findUserById(id);
+        if(!user) throw new Error('Usuario nao encontrado');
+        await this.userRepository.deleteUser(id);
+        return {message: 'Usuario deletado com sucesso'};
+    }
+    getAllUsers(){
+        return this.userRepository.getAllUsers();
+    }
+
 }
+
+export default new UserService(userRepository);

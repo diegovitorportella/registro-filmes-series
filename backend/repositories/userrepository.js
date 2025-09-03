@@ -7,7 +7,7 @@ class UserRepository {
     async findUserByEmail(email) {
         return await userModel.findOne({ where: { email } });
     }
-    async gewtUserByemailWithPassword(email){
+    async getUserByemailWithPassword(email){
         return await userModel.findOne({where: {email}, attributes: {include: ['password']}});
     }
     async findUserById(id) {
