@@ -1,10 +1,15 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import { Sequelize } from 'sequelize';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const db = open({
-    filename: path.join(__dirname, 'database.sqlite'),
-    driver: sqlite3.Database
+// Obter o __dirname no escopo de ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: path.join(__dirname, '..', 'database.sqlite'), // O arquivo database.sqlite será criado na raiz do seu projeto (pasta 'backend')
+  logging: false, // Desabilita o log de queries SQL no console (opcional, mas recomendado para produção)
 });
 
-export default db;
+export default sequelize;

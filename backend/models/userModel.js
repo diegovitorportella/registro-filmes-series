@@ -1,5 +1,5 @@
-import squelize from '../config/database.js';
-import {Datatypes, Model} from 'sequelize';
+import sequelize from '../config/database.js';
+import {DataTypes, Model} from 'sequelize';
 import bcrypt from 'bcrypt';
 
 class User extends Model{
@@ -10,11 +10,11 @@ class User extends Model{
 
 User.init({
     name: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     },
     email: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         validate: {
@@ -22,7 +22,7 @@ User.init({
         },
     },
     password: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         set(value) {
             const salt = bcrypt.genSaltSync(10);
@@ -31,7 +31,7 @@ User.init({
         }
     },
 }, {
-    squelize,
+    sequelize,
     modelName: 'User',
     tablename: 'users', 
 })

@@ -5,7 +5,7 @@ class UserService{
     constructor(UserRepository){
         this.userRepository = UserRepository;
     }
-    async registerUser(user){
+    async createUserService(user){
         const existingUser = await this.userRepository.findUserByEmail(user.email);
         if(existingUser){
             throw new Error('Usuario ja existe com esse email');
